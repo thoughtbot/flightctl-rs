@@ -62,10 +62,10 @@ impl Selector {
                 Err(anyhow::Error::msg("No application found by that name"))
             }
             None => {
-                if config.applications.len() == 1 {
-                    Ok(&config.applications[0])
-                } else {
-                    Err(anyhow::Error::msg("More than one application"))
+                match config.applications.len() {
+                    0 => Err(anyhow::Error::msg("No applications found in config")),
+                    1 => Ok(&config.applications[0]),
+                    _ => Err(anyhow::Error::msg("More than one application")),
                 }
             }
         }
